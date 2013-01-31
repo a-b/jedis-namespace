@@ -386,7 +386,16 @@ public class NamespaceJedisTest {
         assertEquals(asList("20", "30"), response5.get());
         assertEquals(asList("30", "40"), response6.get());
     }
-    
+
+    @Test
+    public void shouldPrpendNamspaceInsideMulti() {
+        Transaction t = namespaced.multi();
+        t.set("foo", "bar");
+        t.exec();
+
+        assertEquals("bar", jedis.get("ns:foo"));
+    }
+
     @Test
     public void canReturnAndCheckoutUsableResource() {
         namespaced.set("breadcrumb", "something");
